@@ -1,0 +1,28 @@
+{% extends 'app/base_template.html' %}
+
+{%block bodyContent%}
+    <div class="login-page">
+  <div class="form">
+    <form class="register-form">
+      <input type="text" placeholder="usuario"/>
+      <input type="password" placeholder="contraseña"/>
+      <input type="text" placeholder="correo electrónico"/>
+      <button>create</button>
+      <p class="message">ya está registrado? <a href="#">Iniciar Sesión</a></p>
+    </form>
+    <form class="login-form">
+      <input type="text" placeholder="usuario"/>
+      <input type="password" placeholder="contraseña"/>
+      <button>Iniciar Sesión</button>
+      <p class="message">No está registrado? <a href="#">Crear Cuenta</a></p>
+    </form>
+  </div>
+</div>
+
+<script>
+    $('.message a').click(function(){
+        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+    });
+
+</script>
+{%endblock%}
