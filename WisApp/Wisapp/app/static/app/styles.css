@@ -166,8 +166,16 @@ button:focus{
     text-overflow: ellipsis;
 }
 
+.readMoreText{
+    margin-top: 5px;
+    border-top: 1px solid rgba(5,5,5,0.5);
+}
+
+.card-footer{
+    border-top: 1px solid rgba(5,5,5,0);
+}
 body {
-    background-color: rgb(250,250,250);
+    background-color: rgb(245,245,245);
     font-size: 32px;
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -175,6 +183,10 @@ body {
 }
 ul {
   list-style-type: none !important;
+}
+
+.cardImage{
+    max-height: 350px;
 }
 .interactIcons{
     font-size: 20px;
@@ -187,6 +199,36 @@ ul {
                                   supported by Chrome and Opera */
 }
 
+.categoryComedy{
+    color: #2196F3 !important;
+}
+.categoryFood{
+    color: #28a745 !important;
+}
+.categoryTitle{
+    font-size: 40px;
+    font-weight: bold;
+
+}
+
+.storyTextFull{
+    border-top: 5px solid rgba(240,240,240,0.2);
+}
+
+.bodyTitle{
+    font-weight: bold;
+    font-size: 80px;
+    margin-top: 15px;
+}
+.categoryFooter{
+    margin-top: 10px;
+}
+.categoryComedyFooter{
+    border-top: 3px solid #2196F3 !important;
+}
+.categoryFoodFooter{
+    border-top: 3px solid #28a745 !important;
+}
 .interactFooter{
     padding-left: 10px;
     font-size: 32px;

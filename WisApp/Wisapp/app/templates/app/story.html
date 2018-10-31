@@ -1,0 +1,82 @@
+{% extends 'app/titleBar.html' %}
+{% load staticfiles %}
+{% block bodyContent %}
+<h1 class="bodyTitle text-center">Juegos olímpicos 2004</h1>
+<div class="container-fluid mt-5">
+        <div class="card mb-2">
+            <div class="card-body">
+                <a class="nounderline" href="#"><img class="img-fluid" src="{%static 'media/ranas.jpg' %}" style="max-height: 600px; display: block; margin: 0 auto"></a>
+                <h1 class="card-title text-dark text-center mt-2">Escrita por<a href="#" class="nounderline text-primary"> Ali Villegas</a> </h1>
+                <div class="text-center mt-2">
+                    <a href="#" class="btn btn-success btn-sm text-light">
+                    <h5>Deporte</h5>
+                </a>
+                <a href="#" class="btn btn-dark btn-sm text-light">
+                    <h5>Historia</h5>
+                </a>
+                    <br>
+                    <img class="img-fluid "
+                                 src="{%static 'media/starEmpty.png' %}" width="48px"><span
+                                class="interactIcons">Favorita</span>
+                    <img class="img-fluid  "
+                                 src="{%static 'media/likeIcon.png' %}" width="48px"><span
+                                class="interactIcons">450</span>
+                </div>
+                <a class="nounderline " href="#">
+                    <div class="storyTextFull mt-5">
+                        <p class="text-dark ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                            in reprehenderit in voluptate
+                        </p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="text-center">
+            <h1>Comentarios:</h1>
+        </div>
+     <div class="card mb-5 mx-auto w-75">
+            <div class="card-body">
+                <h1 class="card-title text-dark text-center mt-2"><a href="#" class="nounderline text-primary"> Kawa69</a> dice:</h1>
+                <a class="nounderline " href="#">
+                    <div class="storyText mt-2 text-center">
+                        <p class="text-dark ">No me gustó el final
+                        </p>
+                    </div>
+                </a>
+            </div>
+        </div>
+     <div class="card mb-5 mx-auto w-75">
+            <div class="commentTopBar mt-2">
+                <ul class="d-flex flex-row-reverse">
+                    <li class="btn btn-info btn-lg text-light mr-2">Editar</li>
+                    <li class="btn btn-danger btn-lg text-light mr-2">Borrar</li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title text-dark text-center mt-2"><a href="#" class="nounderline text-primary"> AliVillegas</a> dice:</h1>
+                <a class="nounderline " href="#">
+                    <div class="storyText mt-2 text-center">
+                        <p class="text-dark ">Hijo del pepino con el final
+                        </p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    <div class="card mb-5 mx-auto w-75">
+            <div class="card-body">
+                <h1 class="card-title text-dark text-center mt-2"><a href="#" class="nounderline text-primary"> Kawa69</a> dice:</h1>
+                <a class="nounderline " href="#">
+                    <div class="storyText mt-2 text-center">
+                        <p class="text-dark ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                            in reprehenderit in voluptate
+                        </p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    {%endblock%}
