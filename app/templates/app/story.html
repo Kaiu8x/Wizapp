@@ -1,0 +1,52 @@
+{% extends 'app/titleBar.html' %}
+{% load staticfiles %}
+{% block bodyContent %}
+<div class="storyTitleText">
+    <h1 class="bodyTitle text-center ">{{story.title}}</h1>
+
+</div>
+<div class="container-fluid mt-5">
+    <div class="card mb-2">
+        <div class="card-body">
+            <!-- <a class="nounderline" href="#"><img class="img-fluid" src="{%static 'media/ranas.jpg' %}" style="max-height: 600px; display: block; margin: 0 auto"></a> -->
+            <h1 class="card-title text-dark text-center mt-2">Escrita por <a href="#" class="nounderline text-primary">{{story.author}}</a>
+            </h1>
+            <div class="text-center mt-2">
+                <a href="{%url 'app:filteredHome' story.category.id story.category.name%}" class="btn btn-sm text-light"
+                   style="background-color: {{story.category.color}}">
+                    <h3>{{story.category.name}}</h3>
+                </a>
+                <br>
+                <img class="img-fluid "
+                     src="{%static 'media/starEmpty.png' %}" width="48px"><span
+                    class="interactIcons">Favorita</span>
+                <img class="img-fluid  "
+                     src="{%static 'media/likeIcon.png' %}" width="48px"><span
+                    class="interactIcons">{{story.ranking}}</span>
+            </div>
+            <div class="storyTextFull mt-5">
+                <p class="text-dark text-center">{{story.message}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <h1>Comentarios:</h1>
+    </div>
+    {%if not comment in Story%}
+    <h1 class="text-center text-danger my-5">Aún no hay comentarios en esta historia :c</h1>
+    {%endif%}
+    {%for comment in Story%}
+    <div class="card mb-5 mx-auto w-75">
+        <div class="card-body">
+            <h1 class="card-title text-dark text-center mt-2"><a href="#" class="nounderline text-primary">
+                {{comment.author}}</a> dice:</h1>
+            <div class="storyText mt-2 text-center">
+                <p class="text-dark "> {{comment.message}}
+                </p>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+{%endblock%}
