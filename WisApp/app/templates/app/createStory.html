@@ -1,0 +1,25 @@
+{% extends 'app/titleBar.html' %}
+{% load staticfiles %}
+{% block bodyContent %}
+<h1 class="bodyTitle text-center">Nueva historia</h1>
+<div class="container-fluid mt-5">
+    {%if error_message%}
+    <h2 class="text-danger">Favor de llenar cada campo</h2>
+    {%endif%}
+    <form method="post">
+        {%csrf_token%}
+        <div class="form-group">
+            <ul>{%for field in form%}
+                <li>
+                    <label>
+                    {{field.label_tag}}
+                    </label>
+                </li>
+                <li>{{field}} </li>
+                {%endfor%}
+            </ul>
+        </div>
+        <button type="submit" class="btn btn-success ml-4 my-3"><h2> Crear historia</h2></button>
+    </form>
+</div>
+{%endblock%}

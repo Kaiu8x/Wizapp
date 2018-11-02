@@ -1,0 +1,49 @@
+{% extends 'app/titleBar.html' %}
+{% load staticfiles %}
+{% block bodyContent %}
+<h1 class="bodyTitle text-center">Historias</h1>
+<div class="container-fluid mt-5">
+
+    <div class="card-deck">
+        {%for story in stories%}
+        <div class="card mb-5">
+            <div class="card-body">
+                <a class="nounderline" href="#"><img class="img-fluid" src="{%static 'media/ranas.jpg' %}"></a>
+                <h1 class="card-title text-dark mt-2">{{story.title}}</h1>
+                <h4 class="card-subtitle text-dark my-3"><a class="nounderline text-dark" href="#">Escrita por <span class="text-primary"> {{story.author}}</span></a></h4>
+                <a href="#" class="btn btn-sm text-light" style="background-color: {{story.category.color}} ;">
+                    <h5>{{story.category}}</h5>
+                </a>
+                <a class="nounderline " href="#">
+                    <div class="storyText mt-2">
+                        <p class="text-dark ">{{story.message}}
+                        </p>
+                    </div>
+                </a>
+                <div class="readMoreText">
+                    <a href="#" class="nounderline text-primary">Expandir Historia...</a>
+                </div>
+                <div class="card-footer bg-transparent mt-2 .d-md-none .d-lg-block">
+                    <ul class="interactFooter">
+                        <li>
+                            <img class="img-fluid mt-3" src="{%static 'media/commentIcon.png' %}" width="48px"><span
+                                class="interactIcons ">Comentar</span>
+                        </li>
+                        <li>
+                            <img class="img-fluid mt-3 "
+                                 src="{%static 'media/starEmpty.png' %}" width="48px"><span
+                                class="interactIcons">Favorita</span>
+                        </li>
+                        <li>
+                            <img class="img-fluid  mt-3 "
+                                 src="{%static 'media/likeIcon.png' %}" width="48px"><span
+                                class="interactIcons">{{story.ranking}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+    {%endblock%}
