@@ -22,7 +22,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Wisapp</a>
+    <a class="navbar-brand" href="{%url 'app:home'%}">Wisapp</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -35,23 +35,41 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#"><img class="d-sm-block d-md-none"
-                                                         src="{%static 'media/homeIcon.png' %}"
-                                                         width="48px">Inicio <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{%url 'app:home'%}"><img class="d-sm-block d-md-none"
+                                                                   src="{%static 'media/homeIcon.png' %}"
+                                                                   width="48px">Inicio <span
+                        class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><img class="d-sm-block d-md-none"
-                                                  src="{%static 'media/categoryIcon.png' %}" width="48px">Categorías</a>
+                <a class="nav-link" href="{%url 'app:categories'%}"><img class="d-sm-block d-md-none"
+                                                                         src="{%static 'media/categoryIcon.png' %}"
+                                                                         width="48px">Categorías</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="#"><img class="d-sm-block d-md-none" src="{%static 'media/eventIcon.png' %}"
-                                                   width="48px">Eventos</a>
+                <a class="nav-link " href="{%url 'app:events'%}"><img class="d-sm-block d-md-none"
+                                                                      src="{%static 'media/eventIcon.png' %}"
+                                                                      width="48px">Eventos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="{%url 'app:createStory'%}"><img class="d-sm-block d-md-none"
+                                                                           src="{%static 'media/eventIcon.png' %}"
+                                                                           width="48px">Escribir</a>
             </li>
         </ul>
-        <a class="nav-link" href="#" style="margin-left: 2.7%;"><img src="{%static 'media/accountBox.png' %}"
-                                                                     width="48px"> <span
-                class="profileIcon">Perfil</span></a>
-
+        <ul>
+            <li>
+                <div class="dropdown btn btn-sm usernameTitleButton">
+                    <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        {{request.user.username}}
+                    </div>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#"><h3>Ver perfil</h3></a>
+                        <a class="dropdown-item" href="{%url 'app:logout'%}"><h3>Salir</h3></a>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
 </nav>
 

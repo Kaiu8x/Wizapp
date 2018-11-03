@@ -3,9 +3,20 @@
 {% block bodyContent %}
 <h1 class="bodyTitle text-center">Nueva historia</h1>
 <div class="container-fluid mt-5">
-    {%if error_message%}
-    <h2 class="text-danger">Favor de llenar cada campo</h2>
-    {%endif%}
+    {% if form.errors %}
+    {% for field in form %}
+    {% for error in field.errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
     <form method="post">
         {%csrf_token%}
         <div class="form-group">

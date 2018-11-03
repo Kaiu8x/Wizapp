@@ -1,0 +1,64 @@
+{% extends 'app/base_template.html' %}
+{% load staticfiles %}
+
+{% block bodyContent %}
+<h1 class="bodyTitle text-center" style="font-family: 'Abril Fatface', cursive;">Wisapp</h1>
+<div class="container-fluid mt-5">
+    {% if form.errors %}
+    {% for field in form %}
+    {% for error in field.errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if formComplete.errors %}
+    {% for field in formComplete %}
+    {% for error in field.errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endfor %}
+    {% for error in formComplete.non_field_errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <form method="post" class=" text-center">
+        {%csrf_token%}
+        <div class="form-group">
+            <ul class="pl-0">{%for field in form%}
+                <li class="mt-2 ">
+                    <label>
+                        {{field.label_tag}}
+                    </label>
+                </li>
+                <li class="mb-4">{{form.media}}{{field}}</li>
+                {%endfor%}
+            </ul>
+        </div>
+        <div class="form-group">
+            <ul class="pl-0">{%for field in formComplete%}
+                <li class="mt-2">
+                    <label>
+                        {{field.label_tag}}
+                    </label>
+                </li>
+                <li class="mb-4">{{formCompleteMedia}}{{field}}</li>
+                {%endfor%}
+            </ul>
+        </div>
+        <button type="submit" class="btn btn-success my-3"><h2> Completar Perfil</h2></button>
+    </form>
+</div>
+{%endblock%}
