@@ -53,7 +53,7 @@ class UserProfileForm(forms.ModelForm):
                                 }))
     biography = forms.CharField(widget=forms.Textarea, label='biografía(pequeña descripción sobre tu persona)-Opcional',
                                 required=False)
-    profileImage = forms.ImageField(required=False, widget=FileInput,label='Foto de perfil -Opcional')
+    profileImage = forms.ImageField(required=False, widget=FileInput, label='Foto de perfil -Opcional')
 
     class Meta:
         model = UserWithProfile

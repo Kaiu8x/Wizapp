@@ -52,7 +52,7 @@
                 <div class="text-center">
                     <h1 class="card-title text-dark mt-2">{{story.title}}</h1>
                 </div>
-                <h4 class="card-subtitle text-dark my-3"><a class="nounderline text-dark" href="#">Escrita por <span
+                <h4 class="card-subtitle text-dark my-3"><a class="nounderline text-dark" href="{%url 'app:profile' story.author.user.id%}">Escrita por <span
                         class="text-primary"> {{story.author}}</span></a></h4>
                 <a href="{%url 'app:filteredHome' story.category.id story.category.name%}" class="btn btn-sm text-light"
                    style="background-color: {{story.category.color}} ;">

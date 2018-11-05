@@ -7,16 +7,16 @@
         <div class="card mb-2">
             <div class="card-body">
                 {%if userProfile.profileImage%}
-                    <a class="nounderline"><img class="img-fluid" src="{{userProfile.profileImage.url}}"
+                    <a class="nounderline" href="{%url 'app:UserWithProfileUpdate' userProfile.id%}"><img class="img-fluid" src="{{userProfile.profileImage.url}}"
                                                      style="max-height: 400px; display: block; margin: 0 auto"></a>
                 {%else%}
                     <div class="text-center">
                         <a href="{%url 'app:UserWithProfileUpdate' userProfile.id%}" class=" text-light nounderline btn btn-primary">Subir foto de perfil</a>
                     </div>
                 {%endif%}
-                <h1 class="card-title text-dark text-center mt-2"><a href="{%url 'app:profile' request.user.id%}" class="nounderline text-dark" style="font-weight: bolder;"> {{userProfile.user.username}}</a></h1>
+                <h1 class="card-title text-dark text-center mt-2"><a href="{%url 'app:profile' userProfile.id%}" class="nounderline text-dark" style="font-weight: bolder;"> {{userProfile.user.username}}</a></h1>
                 <h2 class="text-center"><br></h2>
-                <a class="nounderline " href="#">
+                <a class="nounderline " href="">
                     <div class="storyTextFull mt-1">
                         <p class="text-dark w-75 text-center mx-auto" style="font-size: 30px">{{userProfile.biography}}
                         </p>
@@ -40,16 +40,17 @@
         </div>
     </div>
 {%else%}
+<!-- FRIEND PROFILE -->
     <div class="container-fluid mt-5">
         <div class="card mb-2">
             <div class="card-body">
                 {%if userProfile.profileImage%}
-                    <a class="nounderline" href="#"><img class="img-fluid" src="{{userProfile.profileImage.url}}"
+                    <a class="nounderline"><img class="img-fluid" src="{{userProfile.profileImage.url}}"
                                                      style="max-height: 400px; display: block; margin: 0 auto"></a>
                 {%endif%}
-                <h1 class="card-title text-dark text-center mt-2"><a href="#" class="nounderline text-dark" style="font-weight: bolder;"> {{userProfile.user.username}}</a></h1>
+                <h1 class="card-title text-dark text-center mt-2"><a class="nounderline text-dark" style="font-weight: bolder;"> {{userProfile.user.username}}</a></h1>
                 <h2 class="text-center"><br></h2>
-                <a class="nounderline " href="#">
+                <a class="nounderline " >
                     <div class="storyTextFull mt-1">
                         <p class="text-dark w-75 text-center mx-auto" style="font-size: 30px">{{userProfile.biography}}
                         </p>
@@ -60,11 +61,32 @@
         <div class="card mb-2">
             <div class="card-body text-center">
                 <ul class="ml-0 pl-0">
-                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:followedAuthors'%}" class="text-primary nounderline"> Ver sus historias</a> </li>
-                </ul>
+                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:storyFilterByAuthor' userProfile.id%}" class="text-primary nounderline"> Ver sus historias</a> </li>
+                        {%if userIsFollowed%}
+                            <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="unfollow"name="followUserProfile">
+                                    <input style="display: none" type="number" value="{{userProfile.id}}" name="userProfileId">
+                                    <button type="submit" class="btn btn-danger btn-sm text-light mt-2">
+                                        <h2>
+                                            dejar de seguir
+                                        </h2>
+                                    </button>
+                            </form>
+                        {%else%}
+                            <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="follow"name="followUserProfile">
+                                    <input style="display: none" type="number" value="{{userProfile.id}}" name="userProfileId">
+                                    <button type="submit" class="btn btn-success btn-sm text-light mt-2">
+                                        <h2>
+                                            Seguir
+                                        </h2>
+                                    </button>
+                            </form>
+                        {%endif%}
             </div>
         </div>
     </div>
-<!-- FRIEND PROFILE -->
 {%endif%}
 {%endblock%}

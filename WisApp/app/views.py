@@ -3,11 +3,12 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.urls import reverse,reverse_lazy
 from django.dispatch import receiver
 from django.contrib.auth.signals import user_logged_out
+from django.utils.decorators import method_decorator
 from django.views.generic.edit import UpdateView, DeleteView
 from django.db.models import Q
 
@@ -51,6 +52,20 @@ def home(request):
     }
     return render(request, 'app/home.html', context)
 
+def search(request):
+    stories = Story.objects.all().order_by('-ranking')
+    query = request.GET.get("q")
+    if query:
+        stories = Story.objects.filter(Q(title__icontains=query) | Q(author__user__username__icontains=query)).order_by(
+            '-ranking')
+    currentlyLoggedUser = request.user
+    userProfile = UserWithProfile.objects.get(user=currentlyLoggedUser.id)
+    context = {
+        'stories': stories,
+        'userProfile': userProfile
+    }
+    return HttpResponseRedirect(reverse('app:home'))
+
 #Home page seeing only certain category stories
 @login_required
 def filteredHome(request, categoryId, categoryName):
@@ -84,6 +99,17 @@ def homeMyFavoriteStories(request):
         'stories': stories,
         'userProfile': userProfile,
         'favoriteStories': 'favorite'
+    }
+    return render(request, 'app/home.html', context)
+
+@login_required
+def storyFilterByAuthor(request, pk):
+    currentlyLoggedUser = request.user
+    userProfile = UserWithProfile.objects.get(user=currentlyLoggedUser.id)
+    stories = Story.objects.filter(author = pk).order_by('title')
+    context = {
+        'stories': stories,
+        'userProfile': userProfile,
     }
     return render(request, 'app/home.html', context)
 
@@ -132,12 +158,27 @@ def events(request):
 #User profile page
 @login_required
 def profile(request, userId):
-    isAdult = False
-    user = UserWithProfile.objects.get(user = userId )
+    user = UserWithProfile.objects.get(user = userId)
+    userProfile = UserWithProfile.objects.get(user = request.user.id)
+    if request.POST:
+        if 'followUserProfile' in request.POST:
+            follow = request.POST.get('followUserProfile')
+            if follow == 'follow':
+                userProfile.followedUsers.add(request.POST.get('userProfileId'))
+                return HttpResponseRedirect(reverse('app:profile', kwargs={'userId': userId}))
+            else:
+                userProfile.followedUsers.remove(request.POST.get('userProfileId'))
+                return HttpResponseRedirect(reverse('app:profile', kwargs={'userId': userId}))
+
+    userIsFollowed = False
+    if userProfile.followedUsers.all().filter(pk = user.id):
+        userIsFollowed = True
+
     context = {
         'currentUser': request.user,
         'userProfile': user,
-        'isAdult': user.isAdult()
+        'isAdult': user.isAdult(),
+        'userIsFollowed': userIsFollowed
     }
     return render(request, 'app/viewProfile.html', context)
 
@@ -165,28 +206,26 @@ def submitStory(request):
         title = form.cleaned_data['title']
         message = form.cleaned_data['message']
         category = form.cleaned_data['category']
-        uploadedImage = request.FILES['image']
         currentlyLoggedUser = request.user
         userProfile = UserWithProfile.objects.get(user = currentlyLoggedUser.id)
         story.author = userProfile
         story.title = title
         story.message = message
         story.category = category
-        story.image = uploadedImage
+        if 'image' in request.FILES:
+            story.image = request.FILES['image']
         story.save()
         userProfile.writtenStories.add(story)
         return HttpResponseRedirect(reverse('app:home'))
 
     return render(request, 'app/createStory.html', context)
 
-#@login_required
 class StoryUpdate(UpdateView):
     model = Story
     form_class = StoryForm
     template_name_suffix = '_update_form'
     success_url = reverse_lazy('app:home')
 
-#@login_required
 class StoryDelete(DeleteView):
     model = Story
     success_url = reverse_lazy('app:home')
@@ -208,7 +247,8 @@ def submitNewUser(request):
         userProfile = formComplete.save(commit=False)
         birthdate = formComplete.cleaned_data['birthdate']
         bio = formComplete.cleaned_data['biography']
-        uploadedImage = request.FILES['profileImage']
+        if 'profileImage' in request.FILES:
+            uploadedImage = request.FILES['profileImage']
         userProfile.birthdate = birthdate
         userProfile.biograpy = bio
         user.save()
@@ -224,7 +264,10 @@ class UserWithProfileUpdate(UpdateView):
     model = UserWithProfile
     form_class = UserProfileForm
     template_name_suffix = '_update_form'
-    success_url = reverse_lazy('app:home')
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        profileId = UserWithProfile.objects.get(pk = pk)
+        return reverse_lazy('app:profile', kwargs={'userId': profileId.user.id})
 
 @login_required
 def returnPage(request):

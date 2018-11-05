@@ -1,19 +1,28 @@
+//Prioridad 1
 - Comentarios
+- Responsive crear usuario
 - Favorito y me gusta
+- Historia expandida
 - Modificar foto de perfil	
 - Widget de dateField para crearCuenta
 - Mostrar Categorías con colores en crear Historia 
 - Corregir Seguir categorías 
+- Eligir categorías de interés al inicio de sesión por primera vez
+
+//Prioridad 2
 - Paginador 
 - Timeout User session
-- Eligir categorías de interés al inicio de sesión por primera vez
 - Show image when clicked in another page
 - Mantener Espacio en blanco en las historias
 - Seguridad de Edición (no pueda entrar desde el link si no es tu historia)
 
+//TERMINADOS
 - Filtrar por evento TERMINADO
 - Solo Adultos mayores pueden escribir historias TERMINADO
+- Arreglar búsqueda en cada página TERMINADO
+- Redireccionamiento para Update de información del perfil TERMINADO
+- Seguir Usuarios TERMINADO
 
-
+//Opcional por mejorar
 - Mejorar Búsqueda 
 - Añadir ajax
