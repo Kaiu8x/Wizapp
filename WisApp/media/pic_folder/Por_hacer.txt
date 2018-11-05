@@ -1,0 +1,16 @@
+- Widget de dateField para crearCuenta
+- Eligir categorías de interés al inicio de sesión por primera vez
+- Búsqueda de historias
+- Corregir Seguir categorías 
+- Perfil de usuario
+- Paginador 
+- Mostrar Categorías con colores en crear Historia 
+- Comentarios
+- Timeout User session
+
+
+
+
+
+
+- Añadir ajax

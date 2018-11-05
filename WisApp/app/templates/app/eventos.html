@@ -4,25 +4,23 @@
 <h1 class="bodyTitle text-center">Eventos</h1>
 <div class="container-fluid mt-5">
     {%for event in events%}
-        {%if forloop.counter > 1 %}
         <div class="card mb-5">
             <div class="card-body">
-                <h1 class="card-title mt-2 categoryTitle text-center" style="color: #000000;">{{event.title}}</h1>
+                <h1 class="card-title mt-2 categoryTitle text-center" style="color: {{event.color}};">{{event.name}}</h1>
                 <!--<img class="img-fluid" src="{%static 'media/fiestaH.jpg' %}" style="max-height: 400px; display:block; margin: 0 auto;">-->
                 <a class="nounderline " href="#">
-                    <div class="storyText mt-2">
+                    <div class="storyText mt-2" style="font-weight: bolder;">
                         <p class="text-dark  text-center"> {{event.description}}
                         </p>
                     </div>
                 </a>
-                <div class=" categoryFooter text-center" style="border-top: 3px solid #000000;">
-                    <a href="#" class="btn btn-primary btn-sm text-light mt-2">
-                     <h2>Ver historias</h2>
+                <div class=" categoryFooter text-center" style="border-top: 3px solid {{event.color}};">
+                    <a href="{%url 'app:filteredHome' event.id event.name%}" class="btn btn-primary btn-sm text-light mt-2">
+                     <h2>Ver evento</h2>
                      </a>
                 </div>
             </div>
         </div>
-        {%endif%}
     {%endfor%}
 </div>
 

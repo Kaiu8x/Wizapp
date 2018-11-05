@@ -1,0 +1,28 @@
+{% extends 'app/titleBar.html' %}
+{% load staticfiles %}
+{% block bodyContent %}
+<!-- PERSONAL PROFILE -->
+{%if followedUsers%}
+    <div class="container-fluid mt-5">
+        <div class="card mb-2">
+            <div class="card-body text-center">
+                <ul class="ml-0 w-100 pl-0">
+                    {%for followedUser in followedUsers%}
+                        {%if followedUser.profileImage%}
+                            <a class="nounderline" href="{%url 'app:profile' followedUser.user.id%}"><img class="img-fluid" src="{{followedUser.profileImage.url}}"
+                                                     style="max-height: 200px; display: block; margin: 0 auto"></a>
+                        {%endif%}
+                        <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:profile' followedUser.user.id%}" class="text-primary nounderline">{{followedUser.user.username}}</a> </li>
+                    {%endfor%}
+                </ul>
+            </div>
+        </div>
+    </div>
+{%else%}
+     <div class="text-center">
+                    <h1 class="text-primary"> Aún no sigues a nadie</h1>
+                    <a class="nounderline" href="{%url 'app:profile' request.user.id%}"><div class=" mt-5 btn btn-lg btn-success text-light">regresar</div></a>
+     </div>
+<!-- FRIEND PROFILE -->
+{%endif%}
+{%endblock%}

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
+from django.forms import FileInput
 from django.forms.fields import DateField
 from .models import Story, UserWithProfile
 from django.contrib.auth.models import User
@@ -8,18 +9,21 @@ from django.contrib.auth.models import User
 class StoryForm(forms.ModelForm):
     class Meta:
         model = Story
+        image = forms.ImageField(required=False, widget=FileInput,label='Elegir imagen')
         fields = [
-            'title', 'message', 'category', 'author',
+            'title', 'message', 'category','image'
         ]
         labels = {
             'title': 'Título',
             'message': 'Descripción',
-            'category': 'Categoría'
+            'category': 'Categoría/Evento',
+            'image':'imagen'
         }
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control noMarginAuto font32'}),
-            'message': forms.Textarea(attrs={'class': 'storyMessageInput'}),
+            'title': forms.TextInput(attrs={'class': 'form-control mx-auto font32'}),
+            'message': forms.Textarea(attrs={'class': 'storyMessageInput keepWhitespaceFormatting'}),
         }
+
 
 
 class UserForm(forms.ModelForm):
@@ -43,10 +47,13 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    birthdate = DateField(widget=AdminDateWidget,
-                          label='Fecha de nacimiento(Recuerda que si eres menor a 60 años no podrás escribir historias)')
-    biography = forms.CharField(widget=forms.Textarea, label='biografía(pequeña descripción sobre tu persona)',
+    birthdate = forms.DateField(label='Fecha de nacimiento(Recuerda que si eres menor a 55 años no podrás escribir historias)',widget=forms.TextInput(attrs=
+                                {
+                                    'class':'datepicker'
+                                }))
+    biography = forms.CharField(widget=forms.Textarea, label='biografía(pequeña descripción sobre tu persona)-Opcional',
                                 required=False)
+    profileImage = forms.ImageField(required=False, widget=FileInput,label='Foto de perfil -Opcional')
 
     class Meta:
         model = UserWithProfile

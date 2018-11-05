@@ -1,0 +1,19 @@
+- Comentarios
+- Favorito y me gusta
+- Modificar foto de perfil	
+- Widget de dateField para crearCuenta
+- Mostrar Categorías con colores en crear Historia 
+- Corregir Seguir categorías 
+- Paginador 
+- Timeout User session
+- Eligir categorías de interés al inicio de sesión por primera vez
+- Show image when clicked in another page
+- Mantener Espacio en blanco en las historias
+- Seguridad de Edición (no pueda entrar desde el link si no es tu historia)
+
+- Filtrar por evento TERMINADO
+- Solo Adultos mayores pueden escribir historias TERMINADO
+
+
+- Mejorar Búsqueda 
+- Añadir ajax

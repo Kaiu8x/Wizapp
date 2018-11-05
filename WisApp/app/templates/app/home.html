@@ -1,20 +1,73 @@
 {% extends 'app/titleBar.html' %}
 {% load staticfiles %}
 {% block bodyContent %}
-<h1 class="bodyTitle text-center">Historias</h1>
 <div style="border-bottom: 1px solid {{category.color}}"></div>
 <div class="container-fluid mt-5">
+     {%if not stories%}
+            {%if favoriteStories%}
+                <h1 class="bodyTitle text-center">Favoritas</h1>
+                <div class="text-center">
+                    <h1 class="text-primary"> Aún no tienes historias favoritas</h1>
+                    <a class="nounderline" href="{%url 'app:profile' request.user.id%}"><div class=" mt-5 btn btn-lg btn-success text-light">Regresar</div></a>
+                </div>
+            {%elif category%}
+                    {%if category.isEvent%}
+                         <h1 class="bodyTitle text-center">{{category.name}}</h1>
+                        <div class="text-center">
+                            <h1 class="text-primary"> Aún no hay historias de {{category.name}}</h1>
+                            <a class="nounderline" href="{%url 'app:events'%}"><div class=" mt-5 btn btn-lg btn-success text-light">Regresar</div></a>
+                            <br>
+                            <br>
+                            <a class="nounderline" href="{%url 'app:createStory'%}"><div class=" btn btn-lg btn-primary text-light">Escribir historia</div></a>
+                        </div>
+                    {%else%}
+                        <h1 class="bodyTitle text-center">{{category.name}}</h1>
+                        <div class="text-center">
+                            <h1 class="text-primary"> Aún no hay historias de {{category.name}}</h1>
+                            <a class="nounderline" href="{%url 'app:categories'%}"><div class=" mt-5 btn btn-lg btn-success text-light">Regresar</div></a>
+                            <br>
+                            <br>
+                            <a class="nounderline" href="{%url 'app:createStory'%}"><div class=" btn btn-lg btn-primary text-light">Escribir historia</div></a>
+                        </div>
+            {%endif%}
+    {%else%}
+            {%if category%}
+                <h1 class="bodyTitle text-center">Historias de {{category.name}}</h1>
+            {%else%}
+                <h1 class="bodyTitle text-center">Historias</h1>
+            {%endif%}
+                <div class="text-center">
+                    <h1 class="text-primary"> Aún no escribes ninguna historia</h1>
+                    <a class="nounderline" href="{%url 'app:createStory'%}"><div class=" mt-5 btn btn-lg btn-success text-light">Escribir historia</div></a>
+                </div>
+            {%endif%}
+    {%endif%}
     <div class="card-deck">
         {%for story in stories%}
         <div class="card mb-5">
             <div class="card-body">
-                <!-- <a class="nounderline" href="#"><img class="img-fluid" src="{%static 'media/ranas.jpg' %}"></a> -->
-                <h1 class="card-title text-dark mt-2">{{story.title}}</h1>
-                <h4 class="card-subtitle text-dark my-3"><a class="nounderline text-dark" href="#">Escrita por <span class="text-primary"> {{story.author}}</span></a></h4>
-                <a href="{%url 'app:filteredHome' story.category.id story.category.name%}" class="btn btn-sm text-light" style="background-color: {{story.category.color}} ;">
+                {%if story.image%}
+                <a class="nounderline" href="#"><img class="img-fluid" style="display: block; border: 1px solid rgba(50,50,50,0.1); margin: 0 auto;" src="{{story.image.url}}"></a>
+                {%endif%}
+                <div class="text-center">
+                    <h1 class="card-title text-dark mt-2">{{story.title}}</h1>
+                </div>
+                <h4 class="card-subtitle text-dark my-3"><a class="nounderline text-dark" href="#">Escrita por <span
+                        class="text-primary"> {{story.author}}</span></a></h4>
+                <a href="{%url 'app:filteredHome' story.category.id story.category.name%}" class="btn btn-sm text-light"
+                   style="background-color: {{story.category.color}} ;">
                     <h5>{{story.category}}</h5>
                 </a>
-                <a class="nounderline " href="{%url 'app:story' story.id %}">
+                {%for wStory in userProfile.writtenStories.all%}
+                {%if wStory == story%}
+                <div style="border-top: 1px solid darkgray" class="mt-1">
+                    <a class="nounderline" href="{%url 'app:storyUpdate' story.id%}"><div class="btn btn-sm btn-primary text-light">Editar</div></a>
+                     <a class="nounderline" href="{%url 'app:storyDelete' story.id%}"><div class="btn btn-sm btn-danger text-light">Borrar</div></a>
+
+                </div>
+                {%endif%}
+                {%endfor%}
+                <a class="nounderline " href="{%url 'app:story' story.pk %}">
                     <div class="storyText mt-2">
                         <p class="text-dark ">{{story.message}}
                         </p>
@@ -46,4 +99,4 @@
         {%endfor%}
     </div>
 </div>
-    {%endblock%}
+{%endblock%}

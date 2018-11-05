@@ -1,7 +1,0 @@
-primary, blue #007bff
-secondary, gray #6c757d!
-success, green #28a745
-danger, red #dc3545
-warning, yellow #ffc107
-info, lightblue #17a2b8
-dark, darkgray #343a40

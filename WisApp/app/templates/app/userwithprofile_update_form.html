@@ -34,7 +34,7 @@
     {% endfor %}
     {% endif %}
 
-    <form method="post" class=" text-center" enctype='multipart/form-data'>
+    <form method="post" class=" text-center"enctype="multipart/form-data">
         {%csrf_token%}
         <div class="form-group">
             <ul class="pl-0">{%for field in form%}
@@ -58,19 +58,7 @@
                 {%endfor%}
             </ul>
         </div>
-        <button type="submit" class="btn btn-success my-3"><h2> Completar Perfil</h2></button>
+        <button type="submit" class="btn btn-success my-3"><h2> Modificar Perfil</h2></button>
     </form>
 </div>
-
-<script>
-  $(function() {
-    $( ".datepicker" ).datepicker({
-      changeMonth: true,
-      changeYear: true,
-      yearRange: "1900:2012",
-      // You can put more options here.
-
-    });
-  });
-  </script>
 {%endblock%}

@@ -47,6 +47,10 @@
     height: auto;
     max-width: 80%;
 }
+.keepWhitespaceFormatting{
+    white-space: pre-line;
+     text-align : left;
+}
 
 .usernameInput {
     margin: 0 auto;
@@ -309,7 +313,7 @@ ul {
 .storyMessageInput {
     resize: none !important;
     max-width: 1200px !important;
-    width: 65% !important;
+    width: 75% !important;
     height: 300px !important;
 }
 
@@ -343,13 +347,32 @@ ul {
 
 }
 
+input[type=file] {
+    margin: 0 auto !important;
+    text-align: center!important;
+}
 @media (min-width: 576px) {
     .card-deck .card {
         flex: 0 0 calc(100% - 30px);
     }
 
 }
-
+.fileUpload {
+	position: relative;
+	overflow: hidden;
+	margin: 10px;
+}
+.fileUpload input.upload {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
 @media (min-width: 768px) {
     .card-deck .card {
         flex: 0 0 calc(33.3333333333% - 30px);

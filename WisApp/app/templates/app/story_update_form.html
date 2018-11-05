@@ -1,7 +1,7 @@
 {% extends 'app/titleBar.html' %}
 {% load staticfiles %}
 {% block bodyContent %}
-<h1 class="bodyTitle text-center">Nueva historia</h1>
+<h1 class="bodyTitle text-center">Modificar historia</h1>
 <div class="container-fluid mt-5">
     {% if form.errors %}
     {% for field in form %}
@@ -30,14 +30,12 @@
                 {%endfor%}
             </ul>
         </div>
-        <button type="submit" class="btn btn-success ml-4 my-3"><h2> Crear historia</h2></button>
+        <button type="submit" class="btn btn-success ml-4 my-3"><h2> Modificar historia</h2></button>
     </form>
 </div>
-
 <script>
-    $(document).ready(function() {
+    $(document).load(function () {
      $("#id_image").css("width","100%");
-     $("#id_image").css("margin","0 auto");
 });
 </script>
 {%endblock%}
