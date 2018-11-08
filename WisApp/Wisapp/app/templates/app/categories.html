@@ -1,46 +1,53 @@
 {% extends 'app/titleBar.html' %}
 {% load staticfiles %}
+{%load filters%}
 {% block bodyContent %}
 <h1 class="bodyTitle text-center">Categorías</h1>
 <div class="container-fluid mt-5">
-        <div class="card mb-5">
-            <div class="card-body">
-                <h1 class="card-title mt-2 categoryTitle text-center" style="color: #2196F3;">Recetas y nutrición</h1>
-                <a class="nounderline " href="#">
-                    <div class="storyText mt-2">
-                        <p class="text-dark text-center "> Recetas para preparar comida, pláticas sobre comida y salud
-                        </p>
-                    </div>
-                </a>
-                <div class=" categoryFooter text-center" style="border-top: 3px solid #2196F3;">
-                    <a href="#" class="btn btn-primary btn-sm text-light mt-2">
-                     <h2>Ver historias</h2>
-                     </a>
-                     <a href="#" class="btn btn-success btn-sm text-light mt-2">
-                     <h2>Seguir Categoría</h2>
-                     </a>
+    {%for category in categories%}
+    <div class="card mb-5">
+        <div class="card-body"
+             style="border: 0px solid {{category.color}}; background-color: {{category.color}}1; border-radius: 10px; font-weight: bolder;">
+            <h1 class="card-title mt-2 categoryTitle text-center" style="color: {{category.color}};">
+                {{category.name}}</h1>
+            <a class="nounderline " href="#">
+                <div class="storyText mt-2">
+                    <p class="text-dark text-center "> {{category.description}}
+                    </p>
                 </div>
+            </a>
+            <div class=" categoryFooter text-center" style="border-top: 3px solid {{category.color}}">
+                <a href="{%url 'app:filteredHome' category.id category.name%}"
+                   class="btn btn-primary btn-sm text-light mt-2">
+                    <h2>Ver historias</h2>
+                </a>
+                {%if userProfile|followed_category:category.id%}
+                    <form method="post">
+                        {%csrf_token%}
+                        <input type="text" style="display: none;" value="unfollow" name="followCategory">
+                        <input style="display: none" type="number" value="{{category.id}}" name="categoryId">
+                        <button type="submit" class="btn btn-danger btn-sm text-light mt-2">
+                            <h2>
+                                Dejar de Seguir
+                            </h2>
+                        </button>
+                    </form>
+                    {%else%}
+                         <form method="post">
+                                {%csrf_token%}
+                                <input type="text" style="display: none;" value="follow"name="followCategory">
+                                <input style="display: none" type="number" value="{{category.id}}" name="categoryId">
+                                <button type="submit" class="btn btn-success btn-sm text-light mt-2">
+                                    <h2>
+                                        Seguir Categoría
+                                    </h2>
+                                </button>
+                            </form>
+                    {%endif%}
             </div>
         </div>
-        <div class="card mb-5">
-            <div class="card-body">
-                <h1 class="card-title mt-2 categoryTitle text-center" style="color:orangered;">Viajes</h1>
-                <a class="nounderline " href="#">
-                    <div class="storyText mt-2">
-                        <p class="text-dark text-center "> Historias sobre viajes fuera y dentro del país, así como aventuras únicas.
-                        </p>
-                    </div>
-                </a>
-                <div class=" categoryFooter text-center" style="border-top: 3px solid orangered;">
-                    <a href="#" class="btn btn-primary btn-sm text-light mt-2">
-                     <h2>Ver historias</h2>
-                     </a>
-                     <a href="#" class="btn btn-danger btn-sm text-light mt-2">
-                     <h2>Dejar de Seguir</h2>
-                     </a>
-                </div>
-            </div>
-        </div>
+    </div>
+    {%endfor%}
 </div>
 
 {%endblock%}

@@ -1,143 +1,150 @@
 {% extends 'app/titleBar.html' %}
 {% load staticfiles %}
+{%load filters%}
 {% block bodyContent %}
-<h1 class="bodyTitle text-center">Historias</h1>
+
+<div style="border-bottom: 1px solid {{category.color}}"></div>
 <div class="container-fluid mt-5">
+     {%if not stories%}
+            {%if favoriteStories%}
+                <h1 class="bodyTitle text-center">Favoritas</h1>
+                <div class="text-center">
+                    <h1 class="text-primary"> Aún no tienes historias favoritas</h1>
+                    <a class="nounderline" href="{%url 'app:profile' request.user.id%}"><div class=" mt-5 btn btn-lg btn-success text-light">Regresar</div></a>
+                </div>
+            {%elif category%}
+                    {%if category.isEvent%}
+                         <h1 class="bodyTitle text-center">{{category.name}}</h1>
+                        <div class="text-center">
+                            <h1 class="text-primary"> Aún no hay historias de {{category.name}}</h1>
+                            <a class="nounderline" href="{%url 'app:events'%}"><div class=" mt-5 btn btn-lg btn-success text-light">Regresar</div></a>
+                            <br>
+                            <br>
+                            <a class="nounderline" href="{%url 'app:createStory'%}"><div class=" btn btn-lg btn-primary text-light">Escribir historia</div></a>
+                        </div>
+                    {%else%}
+                        <h1 class="bodyTitle text-center">{{category.name}}</h1>
+                        <div class="text-center">
+                            <h1 class="text-primary"> Aún no hay historias de {{category.name}}</h1>
+                            <a class="nounderline" href="{%url 'app:categories'%}"><div class=" mt-5 btn btn-lg btn-success text-light">Regresar</div></a>
+                            <br>
+                            <br>
+                            <a class="nounderline" href="{%url 'app:createStory'%}"><div class=" btn btn-lg btn-primary text-light">Escribir historia</div></a>
+                        </div>
+            {%endif%}
+    {%else%}
+            {%if category%}
+                <h1 class="bodyTitle text-center">Historias de {{category.name}}</h1>
+            {%else%}
+                <h1 class="bodyTitle text-center">Historias</h1>
+            {%endif%}
+                <div class="text-center">
+                    {%if extraData%}
+                    <h1 class="text-primary"> No se encontraron historias ni usuarios relacionados</h1>
+                    <a class="nounderline" href="{%url 'app:home'%}"><div class=" mt-5 btn btn-lg btn-success text-light">Inicio</div></a>
+                    {%else%}
+                    <h1 class="text-primary"> Aún no escribes ninguna historia</h1>
+                    <a class="nounderline" href="{%url 'app:createStory'%}"><div class=" mt-5 btn btn-lg btn-success text-light">Escribir historia</div></a>
+                    {%endif%}
+                </div>
+
+            {%endif%}
+    {%endif%}
     <div class="card-deck">
+        {%for story in stories%}
         <div class="card mb-5">
             <div class="card-body">
-                <a class="nounderline" href="#"><img class="img-fluid" src="{%static 'media/ranas.jpg' %}"></a>
-                <h1 class="card-title text-dark mt-2">Juegos olímpicos 2004 </h1>
-                <h6 class="card-subtitle text-dark my-3"><a class="nounderline text-dark" href="#">Escrita por Ali
-                    Villegas</a></h6>
-                <a href="#" class="btn btn-info btn-sm text-light">
-                    <h5>Deporte</h5>
+                {%if story.image%}
+                <a class="nounderline" href="#"><img class="img-fluid" style="display: block; border: 1px solid rgba(50,50,50,0.1); margin: 0 auto;" src="{{story.image.url}}"></a>
+                {%endif%}
+                <div class="text-center">
+                    <h1 class="card-title text-dark mt-2">{{story.title}}</h1>
+                </div>
+                <h4 class="card-subtitle text-dark my-3"><a class="nounderline text-dark" href="{%url 'app:profile' story.author.user.id%}">Escrita por <span
+                        class="text-primary"> {{story.author}}</span></a></h4>
+                <a href="{%url 'app:filteredHome' story.category.id story.category.name%}" class="btn btn-sm text-light"
+                   style="background-color: {{story.category.color}} ;">
+                    <h5>{{story.category}}</h5>
                 </a>
-                <a href="#" class="btn btn-danger btn-sm text-light">
-                    <h5>Historia</h5>
-                </a>
-                <a class="nounderline " href="#">
+                {%if userProfile == story.author%}
+                <div style="border-top: 1px solid darkgray" class="mt-1">
+                    <a class="nounderline" href="{%url 'app:storyUpdate' story.id%}"><div class="btn btn-sm btn-primary text-light">Editar</div></a>
+                     <a class="nounderline" href="{%url 'app:storyDelete' story.id%}"><div class="btn btn-sm btn-danger text-light">Borrar</div></a>
+                </div>
+                {%endif%}
+                <a class="nounderline " href="{%url 'app:story' story.pk %}">
                     <div class="storyText mt-2">
-                        <p class="text-dark ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                            in reprehenderit in voluptate
+                        <p class="text-dark ">{{story.message}}
                         </p>
                     </div>
                 </a>
                 <div class="readMoreText">
-                    <a href="#" class="nounderline text-primary">Expandir Historia...</a>
+                    <a href="{%url 'app:story' story.id %}" class="nounderline text-primary">Expandir Historia...</a>
                 </div>
                 <div class="card-footer bg-transparent mt-2 .d-md-none .d-lg-block">
                     <ul class="interactFooter">
                         <li>
+                            <a class="nounderline text-dark" style="text-decoration: none;" href="{%url 'app:story' story.id%}">
                             <img class="img-fluid mt-3" src="{%static 'media/commentIcon.png' %}" width="48px"><span
-                                class="interactIcons ">Comentar</span>
+                                class="interactIcons ">Comentarios</span>
+                            </a>
                         </li>
                         <li>
-                            <img class="img-fluid mt-3 "
-                                 src="{%static 'media/starEmpty.png' %}" width="48px"><span
-                                class="interactIcons">Favorita</span>
+                            {%if userProfile|favorited_Story:story.id%}
+                                 <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="unfavorite" name="favStory">
+                                    <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                                    <button type="submit">
+                                        <img class="img-fluid mt-3 "
+                                            src="{%static 'media/starFull.png' %}" width="48px"><span
+                                            class="interactIcons text-primary">Es Favorita</span>
+                                    </button>
+                                </form>
+                            {%else%}
+                                <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="favorite" name="favStory">
+                                    <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                                    <button type="submit">
+                                        <img class="img-fluid mt-3 "
+                                            src="{%static 'media/starEmpty.png' %}" width="48px"><span
+                                            class="interactIcons">Hacer Favorita</span>
+                                    </button>
+                                </form>
+                            {%endif%}
                         </li>
                         <li>
-                            <img class="img-fluid  mt-3 "
+
+                            {%if userProfile|liked_Story:story.id%}
+                                 <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="unlike" name="likeStory">
+                                    <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                                    <button type="submit" class="text-primary">
+                                        <img class="img-fluid  mt-3 "
                                  src="{%static 'media/likeIcon.png' %}" width="48px"><span
-                                class="interactIcons">450</span>
+                                class="interactIcons">{{story.ranking}} Me gusta</span>
+                                    </button>
+                                </form>
+                            {%else%}
+                                <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="like" name="likeStory">
+                                    <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                                    <button type="submit" class="">
+                                         <img class="img-fluid  mt-3 "
+                                 src="{%static 'media/likeIcon.png' %}" width="48px"><span
+                                class="interactIcons">{{story.ranking}} Me gusta</span>
+                                    </button>
+                                </form>
+                            {%endif%}
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-
-        <div class="card mb-5">
-            <div class="card-body">
-                <h1 class="card-title text-dark mt-2">Viaje a Zacatecas </h1>
-                <h6 class="card-subtitle text-dark my-3"><a class="nounderline text-dark" href="#">Escrita por Ali
-                    Villegas</a></h6>
-                <a href="#" class="btn btn-warning btn-sm text-light">
-                    <h5>Viajes</h5>
-                </a>
-                <a href="#" class="btn btn-primary btn-sm text-light">
-                    <h5>Comedia</h5>
-                </a>
-                <a class="nounderline " href="#">
-                    <div class="storyText mt-2">
-                        <p class="text-dark ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                            in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                            laborum.
-
-                        </p>
-                    </div>
-                    <div class="readMoreText">
-                    <a href="#" class="nounderline text-primary">Expandir Historia...</a>
-                </div>
-                </a>
-                <div class="card-footer bg-transparent mt-2 .d-md-none .d-lg-block">
-                    <ul class="interactFooter">
-                        <li>
-                            <img class="img-fluid mt-3" src="{%static 'media/commentIcon.png' %}" width="48px"><span
-                                class="interactIcons ">Comentar</span>
-                        </li>
-                        <li>
-                            <img class="img-fluid mt-3 "
-                                 src="{%static 'media/starEmpty.png' %}" width="48px"><span
-                                class="interactIcons">Favorita</span>
-                        </li>
-                        <li>
-                            <img class="img-fluid  mt-3 "
-                                 src="{%static 'media/likeIcon.png' %}" width="48px"><span
-                                class="interactIcons">1300</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="card mb-5">
-            <div class="card-body">
-                <a class="nounderline" href="#"><img class="img-fluid" src="{%static 'media/grandma.png' %}"></a>
-                <h1 class="card-title text-dark mt-2">Receta para halloween </h1>
-                <h6 class="card-subtitle text-dark my-3"><a class="nounderline text-dark" href="#">Escrita por Kai Kawasaki </a></h6>
-                <a href="#" class="btn btn-success btn-sm text-light">
-                    <h5>Receta</h5>
-                </a>
-                <a href="#" class="btn btn-primary btn-sm text-light">
-                    <h5>Comedia</h5>
-                </a>
-                <a class="nounderline " href="#">
-                    <div class="storyText mt-2">
-                        <p class="text-dark ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore ma
-
-                        </p>
-                    </div>
-                    <div class="readMoreText">
-                    <a href="#" class="nounderline text-primary">Expandir Historia...</a>
-                </div>
-                </a>
-                <div class="card-footer bg-transparent mt-2 .d-md-none .d-lg-block">
-                    <ul class="interactFooter">
-                        <li>
-                            <img class="img-fluid mt-3" src="{%static 'media/commentIcon.png' %}" width="48px"><span
-                                class="interactIcons ">Comentar</span>
-                        </li>
-                        <li>
-                            <img class="img-fluid mt-3 "
-                                 src="{%static 'media/starEmpty.png' %}" width="48px"><span
-                                class="interactIcons">Favorita</span>
-                        </li>
-                        <li>
-                            <img class="img-fluid  mt-3 "
-                                 src="{%static 'media/likeIcon.png' %}" width="48px"><span
-                                class="interactIcons">33000</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        {%endfor%}
     </div>
 </div>
-    {%endblock%}
+{%endblock%}

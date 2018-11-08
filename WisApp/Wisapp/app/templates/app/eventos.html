@@ -3,45 +3,25 @@
 {% block bodyContent %}
 <h1 class="bodyTitle text-center">Eventos</h1>
 <div class="container-fluid mt-5">
+    {%for event in events%}
         <div class="card mb-5">
             <div class="card-body">
-                <h1 class="card-title mt-2 categoryTitle text-center" style="color: #2196F3;">Fiesta Halloween</h1>
-                <img class="img-fluid" src="{%static 'media/fiestaH.jpg' %}" style="max-height: 400px; display:block; margin: 0 auto;">
+                <h1 class="card-title mt-2 categoryTitle text-center" style="color: {{event.color}};">{{event.name}}</h1>
+                <!--<img class="img-fluid" src="{%static 'media/fiestaH.jpg' %}" style="max-height: 400px; display:block; margin: 0 auto;">-->
                 <a class="nounderline " href="#">
-                    <div class="storyText mt-2">
-                        <p class="text-dark  text-center"> Suban sus historias y fotos de Halloween, no olviden el concurso de disfraces
+                    <div class="storyText mt-2" style="font-weight: bolder;">
+                        <p class="text-dark  text-center"> {{event.description}}
                         </p>
                     </div>
                 </a>
-                <div class=" categoryFooter text-center" style="border-top: 3px solid #2196F3;">
-                    <a href="#" class="btn btn-primary btn-sm text-light mt-2">
-                     <h2>Ver historias</h2>
-                     </a>
-                     <a href="#" class="btn btn-success btn-sm text-light mt-2">
-                     <h2>Voy a asistir</h2>
-                     </a>
-                </div>
-            </div>
-        </div>
-        <div class="card mb-5">
-            <div class="card-body">
-                <h1 class="card-title mt-2 categoryTitle text-center" style="color:orangered;">Preparación cena de navidad </h1>
-                <a class="nounderline " href="#">
-                    <div class="storyText mt-2">
-                        <p class="text-dark text-center "> Recuerden que se va a organizar la cena de navidad este año desde el lunes, no falten.
-                        </p>
-                    </div>
-                </a>
-                <div class=" categoryFooter text-center" style="border-top: 3px solid orangered;">
-                    <a href="#" class="btn btn-primary btn-sm text-light mt-2">
+                <div class=" categoryFooter text-center" style="border-top: 3px solid {{event.color}};">
+                    <a href="{%url 'app:filteredHome' event.id event.name%}" class="btn btn-primary btn-sm text-light mt-2">
                      <h2>Ver evento</h2>
                      </a>
-                    <a href="#" class="btn btn-danger btn-sm text-light mt-2">
-                     <h2>No puedo asistir</h2>
-                     </a>
                 </div>
             </div>
         </div>
+    {%endfor%}
 </div>
 
 {%endblock%}
