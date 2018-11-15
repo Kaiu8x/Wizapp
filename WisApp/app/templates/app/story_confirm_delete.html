@@ -1,3 +1,4 @@
+{%if request.user.id is story.author.user.id%}
 {% extends 'app/titleBar.html' %}
 {% load staticfiles %}
 {% block bodyContent %}
@@ -11,4 +12,5 @@
    </form>
     <a href="{%url 'app:home'%}" class="nounderline btn btn-primary text-center text-light">Regresar</a>
 </div>
+{%endif%}
 {%endblock%}

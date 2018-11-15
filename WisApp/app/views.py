@@ -473,19 +473,23 @@ def createPetition(request):
         return HttpResponseRedirect(reverse('app:home'))
 
     return render(request, 'app/createPetition.html', context)
+
 class StoryUpdate(UpdateView):
     model = Story
     form_class = StoryForm
     template_name_suffix = '_update_form'
+    context_object_name = 'story'
     success_url = reverse_lazy('app:home')
 
 class StoryDelete(DeleteView):
     model = Story
     success_url = reverse_lazy('app:home')
+    context_object_name = 'story'
 
 class UserDelete(DeleteView):
     model = User
     template_name = 'deleteUser.html'
+    context_object_name = 'userToDelete'
     success_url = reverse_lazy('app:userLogin')
 
 #Page for Creating new user accounts
@@ -523,6 +527,7 @@ class UserWithProfileUpdate(UpdateView):
     model = UserWithProfile
     form_class = UserProfileFormUpdate
     template_name_suffix = '_update_form'
+    context_object_name = 'userWithProfile'
     def get_success_url(self):
         pk = self.kwargs['pk']
         profileId = UserWithProfile.objects.get(pk = pk)

@@ -1,6 +1,7 @@
 {% extends 'app/titleBar.html' %}
 {% load staticfiles %}
 {% block bodyContent %}
+{%if request.user.id is userToDelete.id%}
 <h1 class="bodyTitle text-center"></h1>
 <div style="border-bottom: 1px solid {{category.color}}"></div>
 <div class="container-fluid mt-5 text-center">
@@ -12,4 +13,5 @@
    </form>
     <a href="{%url 'app:profile' request.user.id%}" class="nounderline btn btn-primary text-center text-light">Regresar</a>
 </div>
+{%endif%}
 {%endblock%}
