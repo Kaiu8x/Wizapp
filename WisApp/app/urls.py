@@ -13,6 +13,7 @@ urlpatterns = [
     path('modificarInfoPerfil<pk>', views.UserWithProfileUpdate.as_view(), name="UserWithProfileUpdate"),
     path('login/', views.login, name='userLogin'),
     path('inicio/', views.home, name='home'),
+    path('estadisticas/', views.showStatistics, name='showStatistics'),
     path('inicio/Categoria-<categoryId>-<categoryName>/', views.filteredHome, name='filteredHome'),
     path('inicio/MisHistorias/', views.homeMyStories, name='homeMyStories'),
     path('inicio/MisHistorias/Favoritas', views.homeMyFavoriteStories, name='homeMyFavoriteStories'),

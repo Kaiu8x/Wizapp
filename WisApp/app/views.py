@@ -1,7 +1,7 @@
 # Create your views here.
 from django.contrib import messages
 from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import login as auth_login
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, redirect
@@ -46,9 +46,6 @@ def home(request):
     userProfile = UserWithProfile.objects.get(user=currentlyLoggedUser.id)
     query = request.GET.get("q")
     extraData = None
-    if query:
-         stories = Story.objects.filter(Q(title__icontains=query)|Q(author__user__username__icontains=query)).order_by('-ranking')
-         extraData = 'Search'
     if request.POST:
         if 'favStory' in request.POST:
             favorite = request.POST.get('favStory')
@@ -74,8 +71,16 @@ def home(request):
                     storyLiked.ranking = storyLiked.ranking - 1
                     storyLiked.save()
                     return HttpResponseRedirect(reverse('app:home'))
+    if userProfile.followedCategories.all():
+        stories = Story.objects.filter(category=150000000)
+        for category in userProfile.followedCategories.all():
+            stories = stories | Story.objects.filter(category=category.id)
+    stories.order_by('-created_at')
+    if query:
+         stories = Story.objects.filter(Q(title__icontains=query)|Q(author__user__username__icontains=query)).order_by('-ranking')
+         extraData = 'Search'
     context = {
-        'stories': stories,
+        'stories': stories.order_by('-created_at'),
         'userProfile' : userProfile,
         'extraData': extraData
     }
@@ -338,6 +343,22 @@ def profile(request, userId):
     }
     return render(request, 'app/viewProfile.html', context)
 
+@login_required
+def showStatistics(request):
+    user = UserWithProfile.objects.get(user=request.user)
+    userProfile = UserWithProfile.objects.get(user=request.user.id)
+    categories = Category.objects.all()
+    # adultUsers =
+    # usuarios que no son adultos mayores
+    # historias en cada categoría
+    #
+    context = {
+        'currentUser': request.user,
+        'userProfile': user,
+        'categories': categories
+    }
+    return render(request, 'app/statistics.html', context)
+
 #Show specific Story
 @login_required
 def story(request, storyId):
@@ -426,6 +447,8 @@ def submitStory(request):
 
     return render(request, 'app/createStory.html', context)
 
+
+
 @login_required
 def createPetition(request):
     currentlyLoggedUser = request.user
@@ -498,7 +521,7 @@ def submitNewUser(request):
 
 class UserWithProfileUpdate(UpdateView):
     model = UserWithProfile
-    form_class = UserProfileForm
+    form_class = UserProfileFormUpdate
     template_name_suffix = '_update_form'
     def get_success_url(self):
         pk = self.kwargs['pk']

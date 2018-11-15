@@ -10,6 +10,6 @@
        <br> <h3>Toda tu información e historias serán borradas igualmente</h3>
        <button action="submit" class="btn btn-sm btn-danger">Confirmar </button>
    </form>
-    <a href="{%url 'app:home'%}" class="nounderline btn btn-primary text-center text-light">Regresar</a>
+    <a href="{%url 'app:profile' request.user.id%}" class="nounderline btn btn-primary text-center text-light">Regresar</a>
 </div>
 {%endblock%}

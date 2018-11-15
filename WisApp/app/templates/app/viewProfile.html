@@ -28,13 +28,16 @@
         <div class="card mb-2">
             <div class="card-body text-center">
                 <ul class="ml-0 pl-0">
+                    {%if request.user.is_superuser%}
+                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:showStatistics'%}" class="text-success nounderline">Ver Estadísticas</a> </li>
+                    {%endif%}
                     {%if isAdult%}
                     <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:homeMyStories'%}" class="text-primary nounderline">Mis historias</a> </li>
                     {%endif%}
                     <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:homeMyFavoriteStories'%}" class="text-primary nounderline">Mis historias favoritas</a> </li>
 
                     <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:followedAuthors'%}" class="text-primary nounderline">Autores que sigo</a> </li>
-                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:UserWithProfileUpdate' userProfile.id%}" class="text-primary nounderline">Editar información o subir foto de perfil</a> </li>
+                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:UserWithProfileUpdate' userProfile.id%}" class="text-primary nounderline">Editar información de perfil</a> </li>
                     <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:createPetition'%}" class="text-primary nounderline">Escribir una sugerencia  o queja</a> </li>
                     <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:userwithprofileDelete' request.user.id%}" class="text-danger nounderline">Borrar Cuenta</a> </li>
                 </ul>

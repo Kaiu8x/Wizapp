@@ -1,0 +1,40 @@
+{% extends 'app/titleBar.html' %}
+{% load staticfiles %}
+{% block bodyContent %}
+{%load filters%}
+{%if request.user.is_superuser%}
+<div class="container-fluid mt-5">
+    <div class="card mb-5">
+            <div class="card-body">
+                <h1 style="font-weight: bolder">Usuarios:</h1>
+                <ul>
+                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"> Cuentas de Personas mayores: {{userProfile|adultAccounts}} </li>
+                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"> Cuentas de Usuarios totales: {{userProfile|commonUsersCount}} </li>
+
+                </ul>
+            </div>
+    </div>
+    <div class="card mb-5">
+            <div class="card-body">
+                <h1 style="font-weight: bolder">Categorias:</h1>
+                <ul>
+                {%for category in categories%}
+                    {%if userProfile|stories_Category:category.id%}
+                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"> Historias dentro de <span style="color: {{category.color}}">{{category.name}}</span> :{{userProfile|stories_Category:category.id}} </li>
+                    {%endif%}
+                {%endfor%}
+                </ul>
+            </div>
+    </div>
+    <div class="card mb-5">
+            <div class="card-body">
+                <h1 style="font-weight: bolder">Historias:</h1>
+                <ul>
+                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"> Historia más votada: <span style="font-weight: bolder"> {{userProfile|mostVotedStory}}</span></li>
+
+                </ul>
+            </div>
+    </div>
+</div>
+{%endif%}
+{%endblock%}

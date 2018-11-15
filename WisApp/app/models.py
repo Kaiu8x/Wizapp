@@ -1,5 +1,6 @@
 from django.db import models
 from colorfield.fields import ColorField
+from django.db.models import Count
 from django.urls import reverse
 from django.contrib.auth.models import User
 from datetime import date
@@ -23,8 +24,19 @@ class UserWithProfile(models.Model):
         verbose_name_plural = 'Usuarios(Perfil)'
     def __str__(self):
         return self.user.__str__()
+    def adultsCount(self):
+        adultCounter = 0
+        users = UserWithProfile.objects.all()
+        for user in users:
+            if user.isAdult():
+                adultCounter = adultCounter + 1
+        return adultCounter
+
+    def commonUsersCount(self):
+        return UserWithProfile.objects.all().count()
+
     def isAdult(self):
-        return date.today().year - self.birthdate.year > 55
+        return date.today().year - self.birthdate.year > 60
     def getWrittenStories(self):
         return self.writtenStories
     def categoryIsFollowed(self,categoryId):
@@ -69,8 +81,13 @@ class Story(models.Model):
     def get_absolute_url(self):
         return reverse('app:home',kwargs={'pk': self.pk})
 
+    def storiesInCategory(request,pk):
+        return Story.objects.filter(category=pk).count()
     def __str__(self):
         return self.title
+    def mostVotedStory(self):
+        mostVoted = Story.objects.all().order_by('-ranking')[0]
+        return "%s con %s votos" %(mostVoted.title,mostVoted.ranking)
 
 class PetitionForAdmin(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='id')

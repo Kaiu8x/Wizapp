@@ -84,7 +84,7 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    birthdate = forms.DateField(label='Fecha de nacimiento(Recuerda que si eres menor a 55 años no podrás escribir historias)',widget=forms.TextInput(attrs=
+    birthdate = forms.DateField(label='Fecha de nacimiento(Recuerda que si eres menor a 60 años no podrás escribir historias)',widget=forms.TextInput(attrs=
                                 {
                                     'class':'datepicker'
                                 }))
@@ -109,6 +109,34 @@ class UserProfileForm(forms.ModelForm):
         bio = self.visible_fields()[1]
         date.field.widget.attrs['class'] = 'form-control createUserInput dateInput'
         bio.field.widget.attrs['class'] = 'form-control createUserInput bioInput'
+
+class UserProfileFormUpdate(forms.ModelForm):
+    birthdate = forms.DateField(label='Fecha de nacimiento(Recuerda que si eres menor a 55 años no podrás escribir historias)',widget=forms.TextInput(attrs=
+                                {
+                                    'class':'datepicker'
+                                }))
+    biography = forms.CharField(widget=forms.Textarea, label='biografía(pequeña descripción sobre tu persona)-Opcional',
+                                required=False)
+
+    class Meta:
+        model = UserWithProfile
+        fields = [
+            'birthdate', 'biography'
+        ]
+
+        labels = {
+            'birthdate': 'Fecha de nacimiento',
+            'biografía': 'Biografía(pequeña descripción sobre tu persona)'
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileFormUpdate, self).__init__(*args, **kwargs)
+        date = self.visible_fields()[0]
+        bio = self.visible_fields()[1]
+        date.field.widget.attrs['class'] = 'form-control createUserInput dateInput'
+        bio.field.widget.attrs['class'] = 'form-control createUserInput bioInput'
+
+
 class UserLoginForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
     username = forms.CharField(label='Nombre de usuario')
