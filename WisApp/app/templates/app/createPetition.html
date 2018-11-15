@@ -1,7 +1,13 @@
 {% extends 'app/titleBar.html' %}
 {% load staticfiles %}
 {% block bodyContent %}
-<h1 class="bodyTitle text-center">Nueva historia</h1>
+<div class="container-fluid">
+
+    <h1 class="bodyTitle text-center">Nueva Sugerencia o Queja</h1>
+    <div class="w-75 text-dark text-left mx-auto" style="font-weight: bold;">
+        <h3>Aquí puedes realizar una petición o reportar cualquier problema dentro de la aplicación, pueden ser tanto quejas como sugerencias para eventos y categorías.</h3>
+    </div>
+</div>
 <div class="container-fluid mt-5">
     {% if form.errors %}
     {% for field in form %}
@@ -28,30 +34,13 @@
                 </li>
                 <li class="mb-4">{{formMedia}}
 
-                    {%if field.id_for_label == 'id_category'%}
                     {{field}}
-                        {%elif field.id_for_label == 'id_image'%}
-                        <div class="file-field text-center">
-                            <div class="btn btn-primary btn-lg text-center" style="max-width: 90%;">
-                            <span style="position: absolute"
-                                  class="ml-0 text-center"><h3>Añadir foto a historia</h3></span>
-                                <input type="file" id="{{ field.id_for_label }}"
-                                       style="opacity: 0; max-width: 90%"
-                                       name="{{ field.html_name }}"
-                                       class="text-center"
-                                       maxlength="{{ field.field.max_length }}" value="{{field.value}}">
-                            </div>
-                            <div class="file-path-wrapper">
-                                <label id="showImage" class="text-info my-2" style="text-overflow:ellipsis">{{field.value}} </label>
-                            </div>
-                            {%else%}
-                            {{field}}
-                            {%endif%}
+
                 </li>
                 {%endfor%}
             </ul>
         </div>
-        <button type="submit" class="btn btn-success  my-3"><h2> Crear historia</h2></button>
+        <button type="submit" class="btn btn-success  my-3"><h2> Enviar </h2></button>
     </form>
 </div>
 

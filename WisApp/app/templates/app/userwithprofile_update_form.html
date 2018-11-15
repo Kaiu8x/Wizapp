@@ -34,31 +34,43 @@
     {% endfor %}
     {% endif %}
 
-    <form method="post" class=" text-center"enctype="multipart/form-data">
+    <form method="post" class=" text-center"  enctype='multipart/form-data'>
         {%csrf_token%}
-        <div class="form-group">
+        <div class="form-group inputForm">
             <ul class="pl-0">{%for field in form%}
-                <li class="mt-2 ">
-                    <label>
-                        {{field.label_tag}}
-                    </label>
-                </li>
-                <li class="mb-4">{{form.media}}{{field}}</li>
-                {%endfor%}
-            </ul>
-        </div>
-        <div class="form-group">
-            <ul class="pl-0">{%for field in formComplete%}
                 <li class="mt-2">
                     <label>
                         {{field.label_tag}}
                     </label>
                 </li>
-                <li class="mb-4">{{formCompleteMedia}}{{field}}</li>
+                <li class="mb-4">{{formMedia}}
+                    {%if field.id_for_label == 'id_profileImage'%}
+                    <div class="file-field text-center">
+                        <div class="btn btn-primary btn-lg text-center">
+                            <span style="position: absolute"
+                                  class="ml-4 text-center"><h3>Eligir foto de Perfil</h3></span>
+                            <input type="file" id="{{ field.id_for_label }}"
+                                   style="opacity: 0"
+                                   name="{{ field.html_name }}"
+                                   class="text-center"
+                                   maxlength="{{ field.field.max_length }}" value="{{field.value}}">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <label id="showImage" class="text-info my-2" style="text-overflow:ellipsis"> {{field.value }} </label>
+                        </div>
+                    </div>
+                        {%elif field.id_for_label == 'id_birthdate'%}
+                            {{field}}
+                        {%else%}
+                            <div class="" style="max-width: 500px; margin: 0 auto">
+                            <textarea style="max-width: 350px;"  id=" {{ field.id_for_label }}" class="form-control createUserInput bioInput" name="{{ field.html_name }}" maxlength="{{ field.field.max_length }}">{{field.value}}</textarea>
+                            </div>
+                        {%endif%}
+                </li>
                 {%endfor%}
             </ul>
         </div>
-        <button type="submit" class="btn btn-success my-3"><h2> Modificar Perfil</h2></button>
+        <button type="submit" id="submitButton" class="btn btn-success my-3"><h2> Modificar Perfil</h2></button>
     </form>
 </div>
 {%endblock%}

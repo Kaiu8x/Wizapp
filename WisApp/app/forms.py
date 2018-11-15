@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
-from django.forms import FileInput
+from django.forms import FileInput, CheckboxSelectMultiple
 from django.forms.fields import DateField
-from .models import Story, UserWithProfile
+from .models import Story, UserWithProfile, Comment, PetitionForAdmin
 from django.contrib.auth.models import User
 
 
@@ -24,11 +24,48 @@ class StoryForm(forms.ModelForm):
             'message': forms.Textarea(attrs={'class': 'storyMessageInput keepWhitespaceFormatting'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(StoryForm, self).__init__(*args, **kwargs)
+        self.fields['message'].strip = False
 
+class PetitionAdmin( forms.ModelForm ):
+    class Meta:
+        model = PetitionForAdmin
+        message = forms.CharField( widget=forms.Textarea(attrs={'rows': 5, 'cols': 100}))
+        fields = [
+            'title', 'message',
+        ]
+        labels = {
+            'title': 'Título',
+            'message': 'Descripción',
+        }
+    def __init__(self, *args, **kwargs):
+        super(PetitionAdmin, self).__init__(*args, **kwargs)
+
+
+class PetitionForm(forms.ModelForm):
+    class Meta:
+        model = PetitionForAdmin
+        image = forms.ImageField(required=False, widget=FileInput,label='Elegir imagen')
+        fields = [
+            'title', 'message'
+        ]
+        labels = {
+            'title': 'Título',
+            'message': 'Descripción',
+        }
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control mx-auto font32'}),
+            'message': forms.Textarea(attrs={'class': 'storyMessageInput keepWhitespaceFormatting'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PetitionForm, self).__init__(*args, **kwargs)
+        self.fields['message'].strip = False
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
-    username = forms.CharField(label='Nombre de usuario')
+    username = forms.CharField(label='Nombre de usuario',max_length=15)
     email = forms.CharField(widget=forms.EmailInput, label='Email')
 
     class Meta:
@@ -53,7 +90,7 @@ class UserProfileForm(forms.ModelForm):
                                 }))
     biography = forms.CharField(widget=forms.Textarea, label='biografía(pequeña descripción sobre tu persona)-Opcional',
                                 required=False)
-    profileImage = forms.ImageField(required=False, widget=FileInput, label='Foto de perfil -Opcional')
+    profileImage = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class': 'file-field '}), label='Foto de perfil -Opcional')
 
     class Meta:
         model = UserWithProfile
@@ -72,7 +109,6 @@ class UserProfileForm(forms.ModelForm):
         bio = self.visible_fields()[1]
         date.field.widget.attrs['class'] = 'form-control createUserInput dateInput'
         bio.field.widget.attrs['class'] = 'form-control createUserInput bioInput'
-
 class UserLoginForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
     username = forms.CharField(label='Nombre de usuario')
@@ -81,3 +117,14 @@ class UserLoginForm(forms.ModelForm):
         fields = [
             'username', 'password'
         ]
+
+class CommentForm(forms.ModelForm):
+    message = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': 'storyMessageInput keepWhitespaceFormatting'}), label='Comentario')
+    class Meta:
+        model = Comment
+        fields = [
+            'message'
+        ]
+        widgets = {
+            'message': forms.Textarea(attrs={'class': 'storyMessageInput keepWhitespaceFormatting'}),
+        }

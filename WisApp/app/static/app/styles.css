@@ -41,6 +41,10 @@
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+.form-control{
+    max-width: 350px;
+    margin: 0 auto;
+}
 .createUserInput {
     margin: 0 auto;
     width: 80%;
@@ -48,10 +52,14 @@
     max-width: 80%;
 }
 .keepWhitespaceFormatting{
-    white-space: pre-line;
+    white-space: pre-wrap;
      text-align : left;
 }
 
+#id_profileImage{
+    width: 80% !important;
+    margin: 0 auto;
+}
 .usernameInput {
     margin: 0 auto;
     width: 80%;
@@ -78,19 +86,48 @@
     min-height: 150px;
 }
 
+
 .dateInput {
     margin: 0 auto;
     width: 80%;
     max-width: 300px;
 }
 
-.navbar-brand {
-    color: #000;
-    font-family: 'Abril Fatface', cursive;
-    font-size: 40px;
-    line-height: 10px;
-    margin: 15px;
+.inputForm textarea{
+    font-size: 30px;
+    background-color: rgb(245, 245, 245) !important;
 }
+.inputForm input[type="password"],
+.inputForm input[type="text"],
+.inputForm input[type="email"]
+ {
+  background: none;
+  color: black;
+  font-size: 30px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 320px;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #007bff!important;
+}
+
+.inputForm input[type="password"]:focus,
+.inputForm input[type="text"]:focus,
+.inputForm input[type="email"]:focus
+{
+  outline: none;
+    border-bottom: 1px solid #0b8f0a !important;
+}
+.inputForm input[type="password"] {
+  letter-spacing: 0.3em;
+}
+.inputForm input:-webkit-autofill {
+    background-color: rgb(245, 245, 245) !important;}
+.inputForm input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px rgb(245, 245, 245) inset;
+}
+
 
 .nav-link {
     margin-left: 6.9%;
@@ -304,6 +341,7 @@ ul {
 
 .storyTextFull {
     border-top: 5px solid rgba(240, 240, 240, 0.2);
+    text-align: right;
 }
 
 .noMarginAuto {
@@ -347,6 +385,15 @@ ul {
 
 }
 
+button, input[type="submit"], input[type="reset"] {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
 input[type=file] {
     margin: 0 auto !important;
     text-align: center!important;
@@ -377,7 +424,9 @@ input[type=file] {
     .card-deck .card {
         flex: 0 0 calc(33.3333333333% - 30px);
     }
-
+    img{
+        max-width: 600px;
+    }
 }
 
 @media (min-width: 992px) {

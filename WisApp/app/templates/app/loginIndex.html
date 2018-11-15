@@ -34,7 +34,7 @@
             {{field.label_tag}}
             {{form.media}}{{field}}
             {%endfor%}
-            <button type="submit" class="btn btn-success my-3">Iniciar Sesión</button>
+            <button type="submit" id="submitButton" class="btn btn-success my-3">Iniciar Sesión</button>
             <p class="message">¿No está registrado? <a href="{%url 'app:createNewAccount'%}">Crear Cuenta</a></p>
         </form>
     </div>
@@ -44,6 +44,8 @@
     $('.message a').click(function () {
         $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
     });
-
+    $("#id_password").change(function(){
+        $("#id_username").val($("#id_username").val().toLowerCase())
+    });
 </script>
 {%endblock%}

@@ -14,7 +14,7 @@
                         <a href="{%url 'app:UserWithProfileUpdate' userProfile.id%}" class=" text-light nounderline btn btn-primary">Subir foto de perfil</a>
                     </div>
                 {%endif%}
-                <h1 class="card-title text-dark text-center mt-2"><a href="{%url 'app:profile' userProfile.id%}" class="nounderline text-dark" style="font-weight: bolder;"> {{userProfile.user.username}}</a></h1>
+                <h1 class="card-title text-dark text-center mt-2"><a href="{%url 'app:profile' request.user.id%}" class="nounderline text-dark" style="font-weight: bolder;"> {{userProfile.user.username}}</a></h1>
                 <h2 class="text-center"><br></h2>
                 <a class="nounderline " href="">
                     <div class="storyTextFull mt-1">
@@ -35,6 +35,8 @@
 
                     <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:followedAuthors'%}" class="text-primary nounderline">Autores que sigo</a> </li>
                     <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:UserWithProfileUpdate' userProfile.id%}" class="text-primary nounderline">Editar información o subir foto de perfil</a> </li>
+                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:createPetition'%}" class="text-primary nounderline">Escribir una sugerencia  o queja</a> </li>
+                    <li class="my-4" style="border-bottom:  1px solid rgba(50,50,50,0.5);"><a href="{%url 'app:userwithprofileDelete' request.user.id%}" class="text-danger nounderline">Borrar Cuenta</a> </li>
                 </ul>
             </div>
         </div>

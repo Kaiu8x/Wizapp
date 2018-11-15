@@ -1,5 +1,6 @@
 {% extends 'app/titleBar.html' %}
 {% load staticfiles %}
+{%load filters%}
 {% block bodyContent %}
 <div class="storyTitleText">
     <h1 class="bodyTitle text-center ">{{story.title}}</h1>
@@ -8,7 +9,14 @@
 <div class="container-fluid mt-5">
     <div class="card mb-2">
         <div class="card-body">
-            <!-- <a class="nounderline" href="#"><img class="img-fluid" src="{%static 'media/ranas.jpg' %}" style="max-height: 600px; display: block; margin: 0 auto"></a> -->
+            {%if story.image%}
+            <a class="nounderline d-lg-none d-xl-none d-sm-block d-md-block " href="#"><img class="img-fluid"
+                                                 style="display: block; border: 1px solid rgba(50,50,50,0.1); margin: 0 auto;"
+                                                 src="{{story.image.url}}"></a>
+            <a class="nounderline d-none d-sm-none d-md-none d-lg-block d-xl-block " href="#"><img class="img-fluid"
+                                                 style="display: block; max-width: 600px; border: 1px solid rgba(50,50,50,0.1); margin: 0 auto;"
+                                                 src="{{story.image.url}}"></a>
+            {%endif%}
             <h1 class="card-title text-dark text-center mt-2">Escrita por <a href="#" class="nounderline text-primary">{{story.author}}</a>
             </h1>
             <div class="text-center mt-2">
@@ -17,28 +25,127 @@
                     <h3>{{story.category.name}}</h3>
                 </a>
                 <br>
-                <img class="img-fluid "
-                     src="{%static 'media/starEmpty.png' %}" width="48px"><span
-                    class="interactIcons">Favorita</span>
-                <img class="img-fluid  "
-                     src="{%static 'media/likeIcon.png' %}" width="48px"><span
-                    class="interactIcons">{{story.ranking}}</span>
+                <ul class="pl-0">
+                    <li>
+                        {%if userProfile|favorited_Story:story.id%}
+                                 <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="unfavorite" name="favStory">
+                                    <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                                    <button type="submit">
+                                        <img class="img-fluid mt-3 "
+                                            src="{%static 'media/starFull.png' %}" width="48px"><span
+                                            class="interactIcons text-primary">Es Favorita</span>
+                                    </button>
+                                </form>
+                            {%else%}
+                                <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="favorite" name="favStory">
+                                    <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                                    <button type="submit">
+                                        <img class="img-fluid mt-3 "
+                                            src="{%static 'media/starEmpty.png' %}" width="48px"><span
+                                            class="interactIcons">Hacer Favorita</span>
+                                    </button>
+                                </form>
+                            {%endif%}
+                    </li>
+                    <li>
+                        {%if userProfile|liked_Story:story.id%}
+                        <form method="post">
+                            {%csrf_token%}
+                            <input type="text" style="display: none;" value="unlike" name="likeStory">
+                            <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                            <button type="submit" class="text-primary">
+                                <img class="img-fluid  mt-3 "
+                                     src="{%static 'media/likeIcon.png' %}" width="48px"><span
+                                    class="interactIcons">{{story.ranking}} Me gusta</span>
+                            </button>
+                        </form>
+                        {%else%}
+                        <form method="post">
+                            {%csrf_token%}
+                            <input type="text" style="display: none;" value="like" name="likeStory">
+                            <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                            <button type="submit" class="">
+                                <img class="img-fluid  mt-3 "
+                                     src="{%static 'media/likeIcon.png' %}" width="48px"><span
+                                    class="interactIcons">{{story.ranking}} Me gusta</span>
+                            </button>
+                        </form>
+                        {%endif%}
+
+                    </li>
+                </ul>
+                </ul>
             </div>
+            {%if story.author == userProfile%}
+
+            <div class="mt-2 mb-2 text-center">
+                <a class="nounderline ml-2" href="{%url 'app:storyUpdate' story.id%}">
+                    <div class="btn btn btn-primary text-light">Editar historia</div>
+                </a>
+            </div>
+            <div class="mt-2 mb-2 text-center">
+                <a class="nounderline ml-2" href="{%url 'app:storyDelete' story.id%}">
+                    <div class="btn btn btn-danger text-light ">Borrar historia</div>
+                </a>
+            </div>
+
+            {%endif%}
             <div class="storyTextFull mt-5">
-                <p class="text-dark text-center">{{story.message}}
+                <p class="text-dark text-justify" style="margin: 0 auto; width: 95%;">{{story.message}}
                 </p>
             </div>
         </div>
     </div>
-    <div class="text-center">
+    <div class="text-center mb-3">
         <h1>Comentarios:</h1>
+        <div class="btn btn-lg btn-primary text-light text-center" data-toggle="collapse" data-target="#collapseExample"
+             aria-expanded="false" aria-controls="collapseExample">Comentar
+        </div>
     </div>
-    {%if not comment in Story%}
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body text-center">
+            <form method="post">
+                {%csrf_token%}
+                <div class="form-group">
+                    <ul class="pl-0">{%for field in form%}
+                        <li>
+                            <label>
+                                {{field.label_tag}}
+                            </label>
+                        </li>
+                        <li>{{field}}</li>
+                        {%endfor%}
+                    </ul>
+                </div>
+                <button type="submit" class="btn btn-primary my-2">
+                    Confirmar
+                </button>
+            </form>
+        </div>
+    </div>
+    {%if not comments%}
     <h1 class="text-center text-danger my-5">Aún no hay comentarios en esta historia :c</h1>
     {%endif%}
-    {%for comment in Story%}
+    {%for comment in comments%}
     <div class="card mb-5 mx-auto w-75">
         <div class="card-body">
+            {%if comment.author == userProfile%}
+            <div class="mt-1 ">
+                <form method="post">
+                    {%csrf_token%}
+                    <input type="text" style="display: none;" value="erase" name="eraseComment">
+                    <input style="display: none" type="number" value="{{comment.id}}" name="commentId">
+                    <button type="submit" class="text-primary float-right">
+                        <div class="btn btn-sm btn-danger text-light ">Borrar</div>
+                        </a>
+                    </button>
+                </form>
+            </div>
+            {%endif%}
             <h1 class="card-title text-dark text-center mt-2"><a href="#" class="nounderline text-primary">
                 {{comment.author}}</a> dice:</h1>
             <div class="storyText mt-2 text-center">

@@ -34,7 +34,8 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '10.48.215.181',
-    '192.168.1.124'
+    '192.168.1.124',
+    '10.48.215.181',
 ]
 LOGOUT_REDIRECT_URL = '/login'
 
@@ -67,7 +68,7 @@ ROOT_URLCONF = 'Wisapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

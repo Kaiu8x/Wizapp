@@ -1,6 +1,8 @@
 {% extends 'app/titleBar.html' %}
 {% load staticfiles %}
+{%load filters%}
 {% block bodyContent %}
+
 <div style="border-bottom: 1px solid {{category.color}}"></div>
 <div class="container-fluid mt-5">
      {%if not stories%}
@@ -37,11 +39,24 @@
                 <h1 class="bodyTitle text-center">Historias</h1>
             {%endif%}
                 <div class="text-center">
+                    {%if extraData%}
+                    <h1 class="text-primary"> No se encontraron historias ni usuarios relacionados</h1>
+                    <a class="nounderline" href="{%url 'app:home'%}"><div class=" mt-5 btn btn-lg btn-success text-light">Inicio</div></a>
+                    {%else%}
                     <h1 class="text-primary"> Aún no escribes ninguna historia</h1>
                     <a class="nounderline" href="{%url 'app:createStory'%}"><div class=" mt-5 btn btn-lg btn-success text-light">Escribir historia</div></a>
+                    {%endif%}
                 </div>
+
             {%endif%}
     {%endif%}
+    {% if messages %}
+        <ul class="messages text-info text-left">
+            {% for message in messages %}
+                    {% if message.tags %} class="{{ message.tags }}" {% endif %}>*<h2>{{ message }}</h2>
+            {% endfor %}
+        </ul>
+        {% endif %}
     <div class="card-deck">
         {%for story in stories%}
         <div class="card mb-5">
@@ -58,15 +73,12 @@
                    style="background-color: {{story.category.color}} ;">
                     <h5>{{story.category}}</h5>
                 </a>
-                {%for wStory in userProfile.writtenStories.all%}
-                {%if wStory == story%}
+                {%if userProfile == story.author%}
                 <div style="border-top: 1px solid darkgray" class="mt-1">
                     <a class="nounderline" href="{%url 'app:storyUpdate' story.id%}"><div class="btn btn-sm btn-primary text-light">Editar</div></a>
                      <a class="nounderline" href="{%url 'app:storyDelete' story.id%}"><div class="btn btn-sm btn-danger text-light">Borrar</div></a>
-
                 </div>
                 {%endif%}
-                {%endfor%}
                 <a class="nounderline " href="{%url 'app:story' story.pk %}">
                     <div class="storyText mt-2">
                         <p class="text-dark ">{{story.message}}
@@ -79,18 +91,61 @@
                 <div class="card-footer bg-transparent mt-2 .d-md-none .d-lg-block">
                     <ul class="interactFooter">
                         <li>
+                            <a class="nounderline text-dark" style="text-decoration: none;" href="{%url 'app:story' story.id%}">
                             <img class="img-fluid mt-3" src="{%static 'media/commentIcon.png' %}" width="48px"><span
-                                class="interactIcons ">Comentar</span>
+                                class="interactIcons ">Comentarios</span>
+                            </a>
                         </li>
                         <li>
-                            <img class="img-fluid mt-3 "
-                                 src="{%static 'media/starEmpty.png' %}" width="48px"><span
-                                class="interactIcons">Favorita</span>
+                            {%if userProfile|favorited_Story:story.id%}
+                                 <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="unfavorite" name="favStory">
+                                    <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                                    <button type="submit">
+                                        <img class="img-fluid mt-3 "
+                                            src="{%static 'media/starFull.png' %}" width="48px"><span
+                                            class="interactIcons text-primary">Es Favorita</span>
+                                    </button>
+                                </form>
+                            {%else%}
+                                <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="favorite" name="favStory">
+                                    <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                                    <button type="submit">
+                                        <img class="img-fluid mt-3 "
+                                            src="{%static 'media/starEmpty.png' %}" width="48px"><span
+                                            class="interactIcons">Hacer Favorita</span>
+                                    </button>
+                                </form>
+                            {%endif%}
                         </li>
                         <li>
-                            <img class="img-fluid  mt-3 "
+
+                            {%if userProfile|liked_Story:story.id%}
+                                 <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="unlike" name="likeStory">
+                                    <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                                    <button type="submit" class="text-primary">
+                                        <img class="img-fluid  mt-3 "
                                  src="{%static 'media/likeIcon.png' %}" width="48px"><span
-                                class="interactIcons">{{story.ranking}}</span>
+                                class="interactIcons">{{story.ranking}} Me gusta</span>
+                                    </button>
+                                </form>
+                            {%else%}
+                                <form method="post">
+                                    {%csrf_token%}
+                                    <input type="text" style="display: none;" value="like" name="likeStory">
+                                    <input style="display: none" type="number" value="{{story.id}}" name="storyId">
+                                    <button type="submit" class="">
+                                         <img class="img-fluid  mt-3 "
+                                 src="{%static 'media/likeIcon.png' %}" width="48px"><span
+                                class="interactIcons">{{story.ranking}} Me gusta</span>
+                                    </button>
+                                </form>
+                            {%endif%}
                         </li>
                     </ul>
                 </div>

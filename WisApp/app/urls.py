@@ -24,8 +24,10 @@ urlpatterns = [
     path('ver/perfil/<userId>', views.profile, name='profile'),
     path('historia/<storyId>', views.story, name='story'),
     path('crearHistoria/', views.submitStory, name='createStory'),
+    path('crearPeticion/', views.createPetition, name='createPetition'),
     path('modificarHistoria<pk>/', views.StoryUpdate.as_view(), name='storyUpdate'),
     path('eliminarHistoria<pk>/', views.StoryDelete.as_view(), name='storyDelete'),
+    path('eliminarCuenta<pk>/', views.UserDelete.as_view(), name='userwithprofileDelete'),
     path('logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
 
 ]

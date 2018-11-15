@@ -1,5 +1,6 @@
 {% extends 'app/titleBar.html' %}
 {% load staticfiles %}
+{%load filters%}
 {% block bodyContent %}
 <h1 class="bodyTitle text-center">Categorías</h1>
 <div class="container-fluid mt-5">
@@ -20,9 +21,7 @@
                    class="btn btn-primary btn-sm text-light mt-2">
                     <h2>Ver historias</h2>
                 </a>
-                {%if userProfile.followedCategories.all%}
-                    {%for categoryF in userProfile.followedCategories.all%}
-                    {%if categoryF == category%}
+                {%if userProfile|followed_category:category.id%}
                     <form method="post">
                         {%csrf_token%}
                         <input type="text" style="display: none;" value="unfollow" name="followCategory">
@@ -34,31 +33,17 @@
                         </button>
                     </form>
                     {%else%}
-                    <form method="post">
-                        {%csrf_token%}
-                        <input type="text" style="display: none;" value="follow"name="followCategory">
-                        <input style="display: none" type="number" value="{{category.id}}" name="categoryId">
-                        <button type="submit" class="btn btn-success btn-sm text-light mt-2">
-                            <h2>
-                                Seguir Categoría
-                            </h2>
-                        </button>
-                    </form>
+                         <form method="post">
+                                {%csrf_token%}
+                                <input type="text" style="display: none;" value="follow"name="followCategory">
+                                <input style="display: none" type="number" value="{{category.id}}" name="categoryId">
+                                <button type="submit" class="btn btn-success btn-sm text-light mt-2">
+                                    <h2>
+                                        Seguir Categoría
+                                    </h2>
+                                </button>
+                            </form>
                     {%endif%}
-                    {%endfor%}
-                {%else%}
-                 <form method="post">
-                        {%csrf_token%}
-                        <input type="text" style="display: none;" value="follow"name="followCategory">
-                        <input style="display: none" type="number" value="{{category.id}}" name="categoryId">
-                        <button type="submit" class="btn btn-success btn-sm text-light mt-2">
-                            <h2>
-                                Seguir Categoría
-                            </h2>
-                        </button>
-                    </form>
-
-                {%endif%}
             </div>
         </div>
     </div>
