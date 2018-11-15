@@ -22,6 +22,7 @@ class StoryForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control mx-auto font32'}),
             'message': forms.Textarea(attrs={'class': 'storyMessageInput keepWhitespaceFormatting'}),
+            'category': forms.Select(attrs={'class': 'categorySelect mx-auto'}),
         }
 
     def __init__(self, *args, **kwargs):

@@ -29,13 +29,16 @@
                 <li class="mb-4">{{formMedia}}
 
                     {%if field.id_for_label == 'id_category'%}
-                    {{field}}
-                        {%elif field.id_for_label == 'id_image'%}
+                    <div style="margin: 0 auto;">
+                        {{field}}
+                    </div>
+
+                    {%elif field.id_for_label == 'id_image'%}
                         <div class="file-field text-center">
                             <div class="btn btn-primary btn-lg text-center" style="max-width: 90%;">
                             <span style="position: absolute"
                                   class="ml-0 text-center"><h3>Añadir foto a historia</h3></span>
-                                <input type="file" id="{{ field.id_for_label }}"
+                                <input type="file" accept="image/x-png,image/gif,image/jpeg" id="{{ field.id_for_label }}"
                                        style="opacity: 0; max-width: 90%"
                                        name="{{ field.html_name }}"
                                        class="text-center"

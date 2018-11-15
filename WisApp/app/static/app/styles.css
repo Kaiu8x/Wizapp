@@ -42,7 +42,12 @@
   hyphens: auto;
 }
 .form-control{
-    max-width: 350px;
+    max-width: 90%;
+    margin: 0 auto;
+}
+.categorySelect{
+    min-width: 290px;
+    max-width: 90%;
     margin: 0 auto;
 }
 .createUserInput {
